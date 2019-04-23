@@ -10,35 +10,28 @@ resources:
       sha: master
 
 pipelines:
-  - name: node_ci_pipeline
+  - name: ci_pipeline
     steps:
-      - name: node_test_step
+      - name: build
         type: bash
         setup:
           runtime:
-            type: host
-          environmentVariables:
-            normal:
-              TEST_RESULTS_DIR: "$res_node_app_jfrog_resourcePath/shippable/testresults"
-              CODE_COVERAGE_DIR: "$res_node_app_jfrog_resourcePath/shippable/codecoverage"
-              TESTS_LOC_DIR: "$res_node_app_jfrog_resourcePath/tests"
-              MOD_LOC: "$res_node_app_jfrog_resourcePath/node_modules/.bin"
-        triggeredBy:
-          resources:
-            - node_app_jfrog
+            type: image
+            custom:
+              name: drydock/u16all
+              tag: master
+        #   environmentVariables:
+        #     normal:
+        #       TEST_RESULTS_DIR: "$res_node_app_jfrog_resourcePath/shippable/testresults"
+        #       CODE_COVERAGE_DIR: "$res_node_app_jfrog_resourcePath/shippable/codecoverage"
+        #       TESTS_LOC_DIR: "$res_node_app_jfrog_resourcePath/tests"
+        #       MOD_LOC: "$res_node_app_jfrog_resourcePath/node_modules/.bin"
+        # triggeredBy:
+        #   resources:
+        #     - node_app_jfrog
         execution:
           onExecute:
-            - echo $res_node_app_jfrog_resourcePath
-            - npm install
-            - mkdir -p $TEST_RESULTS_DIR && mkdir -p $CODE_COVERAGE_DIR && mkdir -p $TESTS_LOC_DIR
-            - mkdir -p $MOD_LOC/mocha
-            - pushd $TESTS_LOC_DIR
-            - echo $TESTS_LOC_DIR
-            - $MOD_LOC/mocha --recursive "$TESTS_LOC_DIR/**/*.spec.js" -R mocha-junit-reporter --reporter-options "mochaFile=$TEST_RESULTS_DIR/testresults.xml"
-              #- $MOD_LOC/istanbul --include-all-sources cover -root "$SHIPPABLE_REPO_DIR/routes" $SHIPPABLE_REPO_DIR/node_modules/mocha/bin/_mocha -- -R spec-xunit-file --recursive "$TESTS_LOC_DIR/**/*.spec.js"
-              #- $MOD_LOC/istanbul report cobertura --dir $CODE_COVERAGE_DIR
-
-            - popd
+            - echo "building..."
 
             # - docker login -u $int_orbiteraArtifactory_username -p $int_orbiteraArtifactory_password $int_orbiteraArtifactory_url
             # - rt_ip=$(echo $int_orbiteraArtifactory_url | awk -F[/:] '{print $4}')
@@ -51,21 +44,50 @@ pipelines:
             # - docker build -t $rt_ip:$rt_port/docker-virtual/alpine:$STEP_ID -f Dockerfile .
             # - docker push $rt_ip:$rt_port/docker-virtual/alpine:$STEP_ID
 
-      - name: node_push_step
+      - name: test
         type: bash
         setup:
           runtime:
-            type: host
+            type: image
+            custom:
+              name: drydock/u16all
+              tag: master
         triggeredBy:
           steps:
-            - node_test_step
+            - build
         execution:
           onExecute:
-            - echo "executing step2"
+            - echo "testing...."
 
+      - name: push
+        type: bash
+        setup:
+          runtime:
+            type: image
+            custom:
+              name: drydock/u16all
+              tag: master
+        triggeredBy:
+          steps:
+            - test
+        execution:
+          onExecute:
+            - echo "pushing...."
 
-
-
+      - name: job2
+        type: bash
+        setup:
+          runtime:
+            type: image
+            custom:
+              name: drydock/u16all
+              tag: master
+        triggeredBy:
+          steps:
+            - build
+        execution:
+          onExecute:
+            - echo "job2...."
 
 
 
