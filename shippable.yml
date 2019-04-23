@@ -47,7 +47,7 @@ pipelines:
             # - docker build -t $rt_ip:$rt_port/docker-virtual/alpine:$STEP_ID -f Dockerfile .
             # - docker push $rt_ip:$rt_port/docker-virtual/alpine:$STEP_ID
 
-      - name: node_build_step2
+      - name: node_push_step
         type: bash
         setup:
           runtime:
