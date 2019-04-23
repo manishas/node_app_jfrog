@@ -28,16 +28,17 @@ pipelines:
             - node_app_jfrog
         execution:
           onExecute:
-              - npm install
-              - mkdir -p $TEST_RESULTS_DIR && mkdir -p $CODE_COVERAGE_DIR && mkdir -p $TESTS_LOC_DIR
-              - mkdir -p $MOD_LOC/mocha
-              - pushd $TESTS_LOC_DIR
-              - echo $TESTS_LOC_DIR
-              - $MOD_LOC/mocha --recursive "$TESTS_LOC_DIR/**/*.spec.js" -R mocha-junit-reporter --reporter-options "mochaFile=$TEST_RESULTS_DIR/testresults.xml"
+            - echo $res_node_app_jfrog_resourcePath
+            - npm install
+            - mkdir -p $TEST_RESULTS_DIR && mkdir -p $CODE_COVERAGE_DIR && mkdir -p $TESTS_LOC_DIR
+            - mkdir -p $MOD_LOC/mocha
+            - pushd $TESTS_LOC_DIR
+            - echo $TESTS_LOC_DIR
+            - $MOD_LOC/mocha --recursive "$TESTS_LOC_DIR/**/*.spec.js" -R mocha-junit-reporter --reporter-options "mochaFile=$TEST_RESULTS_DIR/testresults.xml"
               #- $MOD_LOC/istanbul --include-all-sources cover -root "$SHIPPABLE_REPO_DIR/routes" $SHIPPABLE_REPO_DIR/node_modules/mocha/bin/_mocha -- -R spec-xunit-file --recursive "$TESTS_LOC_DIR/**/*.spec.js"
               #- $MOD_LOC/istanbul report cobertura --dir $CODE_COVERAGE_DIR
 
-              - popd
+            - popd
 
             # - docker login -u $int_orbiteraArtifactory_username -p $int_orbiteraArtifactory_password $int_orbiteraArtifactory_url
             # - rt_ip=$(echo $int_orbiteraArtifactory_url | awk -F[/:] '{print $4}')
