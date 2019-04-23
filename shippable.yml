@@ -1,5 +1,5 @@
 resources:
-  - name: node_app_jfrog
+  - name: app
     type: gitRepo
     repoPath: manishas/node_app_jfrog
     configuration:
@@ -26,12 +26,14 @@ pipelines:
         #       CODE_COVERAGE_DIR: "$res_node_app_jfrog_resourcePath/shippable/codecoverage"
         #       TESTS_LOC_DIR: "$res_node_app_jfrog_resourcePath/tests"
         #       MOD_LOC: "$res_node_app_jfrog_resourcePath/node_modules/.bin"
-        # triggeredBy:
-        #   resources:
-        #     - node_app_jfrog
+        triggeredBy:
+          resources:
+            - app
         execution:
           onExecute:
             - echo "building..."
+            - pwd
+            #- docker build -t app:latest .
 
             # - docker login -u $int_orbiteraArtifactory_username -p $int_orbiteraArtifactory_password $int_orbiteraArtifactory_url
             # - rt_ip=$(echo $int_orbiteraArtifactory_url | awk -F[/:] '{print $4}')
