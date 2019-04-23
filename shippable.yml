@@ -26,3 +26,4 @@ pipelines:
           onExecute:
             - echo "First run....."
             - echo "executing step_A..."
+            - echo "demo is going to work!!!!"
