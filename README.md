@@ -1,4 +1,4 @@
-# Build and Push a Docker image for a Node JS application
+# Build and Push a Docker image for a Node JS app
 
 [![Run Status](https://api.shippable.com/projects/5ac6a85f54f7fe070052d7ef/badge?branch=master)](https://app.shippable.com/github/devops-recipes/node_app_jfog) [![Coverage Badge](https://api.shippable.com/projects/5ac6a85f54f7fe070052d7ef/coverageBadge?branch=master)](https://app.shippable.com/github/devops-recipes/node_app_jfog)
 
