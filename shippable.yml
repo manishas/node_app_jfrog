@@ -19,10 +19,10 @@ pipelines:
             type: host
           environmentVariables:
             normal:
-              TEST_RESULTS_DIR: "./shippable/testresults"
-              CODE_COVERAGE_DIR: "./shippable/codecoverage"
-              TESTS_LOC_DIR: "./tests"
-              MOD_LOC: "./node_modules/.bin"
+              TEST_RESULTS_DIR: "$res_node_app_jfrog_resourcePath/shippable/testresults"
+              CODE_COVERAGE_DIR: "$res_node_app_jfrog_resourcePath/shippable/codecoverage"
+              TESTS_LOC_DIR: "$res_node_app_jfrog_resourcePath/tests"
+              MOD_LOC: "$res_node_app_jfrog_resourcePath/node_modules/.bin"
         triggeredBy:
           resources:
             - node_app_jfrog
@@ -32,6 +32,7 @@ pipelines:
               - mkdir -p $TEST_RESULTS_DIR && mkdir -p $CODE_COVERAGE_DIR && mkdir -p $TESTS_LOC_DIR
               - mkdir -p $MOD_LOC/mocha
               - pushd $TESTS_LOC_DIR
+              - echo $TESTS_LOC_DIR
               - $MOD_LOC/mocha --recursive "$TESTS_LOC_DIR/**/*.spec.js" -R mocha-junit-reporter --reporter-options "mochaFile=$TEST_RESULTS_DIR/testresults.xml"
               #- $MOD_LOC/istanbul --include-all-sources cover -root "$SHIPPABLE_REPO_DIR/routes" $SHIPPABLE_REPO_DIR/node_modules/mocha/bin/_mocha -- -R spec-xunit-file --recursive "$TESTS_LOC_DIR/**/*.spec.js"
               #- $MOD_LOC/istanbul report cobertura --dir $CODE_COVERAGE_DIR
