@@ -1,5 +1,5 @@
 resources:
-  - name: node_app
+  - name: node_app_jfrog
     type: gitRepo
     repoPath: manishas/node_app_jfrog
     configuration:
@@ -25,7 +25,7 @@ pipelines:
               MOD_LOC: ./node_modules/.bin/
         triggeredBy:
           resources:
-            - node_app
+            - node_app_jfrog
         execution:
           onExecute:
               - npm install
