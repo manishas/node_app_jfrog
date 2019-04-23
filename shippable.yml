@@ -22,7 +22,7 @@ pipelines:
               TEST_RESULTS_DIR: "./shippable/testresults"
               CODE_COVERAGE_DIR: "./shippable/codecoverage"
               TESTS_LOC_DIR: "./tests"
-              MOD_LOC: "./node_modules/.bin/"
+              MOD_LOC: "./node_modules/.bin"
         triggeredBy:
           resources:
             - node_app_jfrog
